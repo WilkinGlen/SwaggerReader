@@ -1,14 +1,13 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using SwaggerReader;
 
 Console.WriteLine("Hello, World!");
 
-var swaggerJsonPath = "https://petstore.swagger.io/v2/swagger.json"; // Local file path or URL
+var swaggerJsonPath = "https://petstore.swagger.io/v2/swagger.json";
 string swaggerJson;
 
-if (File.Exists(swaggerJsonPath)) // If it's a local file
+if (File.Exists(swaggerJsonPath))
 {
     swaggerJson = File.ReadAllText(swaggerJsonPath);
 }
@@ -21,24 +20,11 @@ else
 
 var swaggerRoot = JsonConvert.DeserializeObject<FullSwaggerRoot>(swaggerJson);
 
-var swaggerDoc = JObject.Parse(swaggerJson);
-
-// Extract the 'paths' section
-var paths = swaggerDoc["paths"];
-
-if (paths != null)
+Console.WriteLine($"Swagger parsed. {swaggerRoot?.Paths?.Count} paths found.");
+if(swaggerRoot?.Paths?.Count > 0)
 {
-    foreach (var path in paths.Children<JProperty>())
+    foreach (var path in swaggerRoot.Paths)
     {
-        Console.WriteLine($"Endpoint: {path.Name}");
-        foreach (var method in path.Value.Children<JProperty>())
-        {
-            var httpMethod = method.Name;
-            Console.WriteLine($"  Method: {httpMethod.ToUpper()}");
-        }
+        Console.WriteLine(path.Key);
     }
-}
-else
-{
-    Console.WriteLine("No paths found in the Swagger file.");
 }

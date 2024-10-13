@@ -1,9 +1,11 @@
 ﻿// See https://aka.ms/new-console-template for more information
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using SwaggerReader;
 
 Console.WriteLine("Hello, World!");
 
-string swaggerJsonPath = "https://petstore.swagger.io/v2/swagger.json"; // Local file path or URL
+var swaggerJsonPath = "https://petstore.swagger.io/v2/swagger.json"; // Local file path or URL
 string swaggerJson;
 
 if (File.Exists(swaggerJsonPath)) // If it's a local file
@@ -13,13 +15,13 @@ if (File.Exists(swaggerJsonPath)) // If it's a local file
 else
 {
     // If you want to fetch it from a server endpoint
-    using (var httpClient = new HttpClient())
-    {
-        swaggerJson = await httpClient.GetStringAsync(swaggerJsonPath);
-    }
+    using var httpClient = new HttpClient();
+    swaggerJson = await httpClient.GetStringAsync(swaggerJsonPath);
 }
 
-JObject swaggerDoc = JObject.Parse(swaggerJson);
+var _ = JsonConvert.DeserializeObject<SwaggerRoot>(swaggerJson);
+
+var swaggerDoc = JObject.Parse(swaggerJson);
 
 // Extract the 'paths' section
 var paths = swaggerDoc["paths"];

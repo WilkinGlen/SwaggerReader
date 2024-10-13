@@ -4,6 +4,7 @@ public class SwaggerRoot
     public string? Swagger { get; set; }
     public Info? Info { get; set; }
     public Dictionary<string, PathItem>? Paths { get; set; }
+    public Dictionary<string, Schema>? Definitions { get; set; }
     public Components? Components { get; set; }
 }
 
@@ -68,6 +69,8 @@ public class Schema
     public Schema? Items { get; set; }
     public string? Example { get; set; }
     public object? Default { get; set; }
+    public string? Ref { get; set; }
+    public string? Description { get; set; }
 }
 
 public class Content

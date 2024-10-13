@@ -19,7 +19,7 @@ else
     swaggerJson = await httpClient.GetStringAsync(swaggerJsonPath);
 }
 
-var _ = JsonConvert.DeserializeObject<SwaggerRoot>(swaggerJson);
+var swaggerRoot = JsonConvert.DeserializeObject<SwaggerRoot>(swaggerJson);
 
 var swaggerDoc = JObject.Parse(swaggerJson);
 
